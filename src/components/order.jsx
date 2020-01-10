@@ -26,8 +26,7 @@ class Order extends Component {
                     <h5 className="card-header">Order Description</h5>
                     <div className="card-body pt-0">
                         {
-                            !this.state.cartItems.length ?
-                                <p className="mx-2 my-4">No items in cart</p> :
+                            this.state.cartItems.length ?
                                 <table className="table table-borderless">
                                     <thead>
                                     <tr>
@@ -48,6 +47,8 @@ class Order extends Component {
                                     }
                                     </tbody>
                                 </table>
+                            :
+                                <p className="mx-2 my-4">No items in cart</p>
                         }
                     </div>
                 </div>
