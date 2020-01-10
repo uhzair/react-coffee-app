@@ -16,6 +16,7 @@ class CoffeeAppStore extends EventEmitter {
         ];
         this.currentCoffee = 0;
         this.cartItems = [];
+        dispatcher.register(this.handleActions.bind(this));
     }
 
     handleActions(action) {
@@ -35,21 +36,19 @@ class CoffeeAppStore extends EventEmitter {
                 break;
             }
             case CoffeeAppActions.COFFEE_APP_ACTIONS.ADD_TO_CART: {
-                let cartItems = [...this.cartItems];
-                let cItem = cartItems.find(ci => ci.name === action.value.name);
+                let cItem = this.cartItems.find(ci => ci.name === action.value.name);
                 if (cItem) {
-                    let index = cartItems.indexOf(cItem);
-                    cartItems[index].cost += action.value.price;
-                    cartItems[index].quantity += 1;
+                    let index = this.cartItems.indexOf(cItem);
+                    this.cartItems[index].cost += action.value.price;
+                    this.cartItems[index].quantity += 1;
                 } else {
-                    cartItems.push({
-                        id: cartItems.length,
+                    this.cartItems.push({
+                        id: this.cartItems.length,
                         name: action.value.name,
                         quantity: 1,
                         cost: action.value.price
                     });
                 }
-                this.cartItems = cartItems;
                 this.emit("itemAdded");
                 break;
             }
@@ -67,6 +66,4 @@ class CoffeeAppStore extends EventEmitter {
     }
 }
 
-const coffeeAppStore = new CoffeeAppStore();
-dispatcher.register(coffeeAppStore.handleActions.bind(coffeeAppStore));
-export default coffeeAppStore;
+export default new CoffeeAppStore();
